@@ -9,7 +9,6 @@ import com.tien.myweatherapp.data.db.entity.Request
 
 data class CurrentWeatherResponse(
     val location: Location,
-    @Embedded(prefix = "request_")
     val request: Request,
     @SerializedName("current")
     val currentWeatherEntry: CurrentWeatherEntry
