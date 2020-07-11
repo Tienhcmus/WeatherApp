@@ -11,7 +11,6 @@ import com.tien.myweatherapp.data.db.network.WeatherNetworkDataSourceImpl
 import com.tien.myweatherapp.data.db.repository.ForecastRepository
 import com.tien.myweatherapp.data.db.repository.ForecastRepositoryImpl
 import com.tien.myweatherapp.ui.weather.current.CurrentWeatherViewFactory
-import okhttp3.Interceptor
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
@@ -29,7 +28,7 @@ class ForecastApplication : Application(), KodeinAware {
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind() from singleton { WeatherAPIService(instance()) }
         bind<WeatherNetworkDataSource>() with singleton { WeatherNetworkDataSourceImpl(instance()) }
-        bind<ForecastRepository>() with singleton {     ForecastRepositoryImpl(instance(), instance()) }
+        bind<ForecastRepository>() with singleton {ForecastRepositoryImpl(instance(), instance()) }
         bind() from provider { CurrentWeatherViewFactory(instance()) }
     }
 

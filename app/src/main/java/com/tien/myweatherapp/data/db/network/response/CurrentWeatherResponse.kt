@@ -1,7 +1,6 @@
-package com.tien.myweatherapp.data.db.network.response
+package com.tien.myweatherapp.data.network.response
 
 
-import androidx.room.Embedded
 import com.google.gson.annotations.SerializedName
 import com.tien.myweatherapp.data.db.entity.CurrentWeatherEntry
 import com.tien.myweatherapp.data.db.entity.Location

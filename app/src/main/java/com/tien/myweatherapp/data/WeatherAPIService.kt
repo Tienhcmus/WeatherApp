@@ -2,8 +2,7 @@ package com.tien.myweatherapp.data
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.tien.myweatherapp.data.db.network.ConnectivityInterceptor
-import com.tien.myweatherapp.data.db.network.ConnectivityInterceptorImpl
-import com.tien.myweatherapp.data.db.network.response.CurrentWeatherResponse
+import com.tien.myweatherapp.data.network.response.CurrentWeatherResponse
 import kotlinx.coroutines.Deferred
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -20,7 +19,8 @@ interface WeatherAPIService {
 
     @GET("current")
     fun getCurrentWeather(
-        @Query("query") location: String
+        @Query("query") location: String,
+        @Query("units") units: String
     ):Deferred<CurrentWeatherResponse>
     companion object{
         operator fun invoke(

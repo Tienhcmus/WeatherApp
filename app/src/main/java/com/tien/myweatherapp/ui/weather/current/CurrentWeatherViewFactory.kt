@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.tien.myweatherapp.data.db.repository.ForecastRepository
 
-class CurrentWeatherViewFactory(private val forecastRepository : ForecastRepository)
+class CurrentWeatherViewFactory(
+    private val forecastRepository : ForecastRepository)
     : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")

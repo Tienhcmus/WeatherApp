@@ -5,8 +5,8 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import com.tien.myweatherapp.data.db.CurrentWeatherDao
 import com.tien.myweatherapp.data.db.network.WeatherNetworkDataSource
-import com.tien.myweatherapp.data.db.network.response.CurrentWeatherResponse
-import com.tien.myweatherapp.data.db.unitlocalized.UnitCurrentWeatherEntry
+import com.tien.myweatherapp.data.db.unitlocalized.UnitSpecificCurrentWeatherEntry
+import com.tien.myweatherapp.data.network.response.CurrentWeatherResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -24,10 +24,11 @@ class ForecastRepositoryImpl (
         }
     }
 
-    override suspend fun getCurrentWeather(): LiveData<out UnitCurrentWeatherEntry> {
-        return withContext(Dispatchers.IO){
+    override suspend fun getCurrentWeather(metric: Boolean): LiveData<out UnitSpecificCurrentWeatherEntry> {
+        return withContext(Dispatchers.IO) {
             initWeatherData()
-            return@withContext currentWeatherDao.getWeatherImperial()
+            return@withContext if (metric) currentWeatherDao.getWeatherMetric()
+            else currentWeatherDao.getWeatherFahrenheit()
         }
     }
 
@@ -44,7 +45,7 @@ class ForecastRepositoryImpl (
     }
 
     private suspend fun fetchCurrentWeather(){
-        weatherNetworkDataSource.fetchCurrentWeather("London")
+        weatherNetworkDataSource.fetchCurrentWeather("London", "m")
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

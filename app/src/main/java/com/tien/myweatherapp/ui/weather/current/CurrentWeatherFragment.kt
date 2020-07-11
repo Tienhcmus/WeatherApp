@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.tien.myweatherapp.ui.weather.current
 
 import android.annotation.SuppressLint
@@ -15,12 +17,15 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
-class CurrentWeatherFragment : ScopeFragment(), KodeinAware {
+class CurrentWeatherFragment() : ScopeFragment(), KodeinAware {
 
     override val kodein by closestKodein()
 
-    private val viewModelFactory: CurrentWeatherViewFactory by instance()
+    private val viewModelFactory : CurrentWeatherViewFactory by instance()
 
+    companion object {
+        fun newInstance() = CurrentWeatherFragment()
+    }
 
     private lateinit var viewModel: CurrentWeatherViewModel
 
@@ -33,25 +38,30 @@ class CurrentWeatherFragment : ScopeFragment(), KodeinAware {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        @Suppress("DEPRECATION")
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CurrentWeatherViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(CurrentWeatherViewModel::class.java)
 
         bindUI()
 
-//        val weatherAPI = WeatherAPIService(ConnectivityInterceptorImpl(this.requireContext()))
-//        val weatherNetworkDataSource = WeatherNetworkDataSourceImpl(weatherAPI)
+
+//        val apiService = WeatherAPIService(ConnectivityInterceptorImpl(this.context!!))
+//        val weatherNetworkDataSource = WeatherNetworkDataSourceImpl(apiService)
 //
-//        weatherNetworkDataSource.downloadCurrentWeather.observe(this.viewLifecycleOwner, Observer { textview.text = it.toString() })
+//        weatherNetworkDataSource.downloadCurrentWeather.observe(this, Observer {
+//            textview.text = it.toString()
+//        })
 //
 //        GlobalScope.launch(Dispatchers.Main ) {
-//            weatherNetworkDataSource.fetchCurrentWeather("London")
+//            weatherNetworkDataSource.fetchCurrentWeather("London", "m")
 //        }
     }
+
     @SuppressLint("FragmentLiveDataObserve")
     private fun bindUI() = launch{
         val currentWeather = viewModel.weather.await()
         currentWeather.observe(this@CurrentWeatherFragment, Observer {
-            if(it == null) return@Observer
+            if(it==null) return@Observer
+
             textview.text = it.toString()
         })
     }
